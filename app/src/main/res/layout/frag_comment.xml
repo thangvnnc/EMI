@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.CommentFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đóng góp ý kiến"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_color"/>
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="   Nơi bạn có thể đóng góp ý kiển giúp chúng tôi cải thiện phần mềm về tính năng cũng như chất lượng.\nTrân trọng cảm ơn quí khách."
+            android:textSize="18sp"
+            android:textColor="@color/text_color"/>
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Góp ý của bạn: "
+            android:textSize="18sp"
+            android:textColor="@color/text_color"/>
+
+        <EditText
+            android:id="@+id/edtComment"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:lines="8"
+            android:hint="Bạn cần thêm chức năng abc, xyz..."/>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnSendComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gửi"
+                style="@style/Button_Primary"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

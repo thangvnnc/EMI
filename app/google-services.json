@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1029019083123",
+    "firebase_url": "https://emidatabase-8b20c.firebaseio.com",
+    "project_id": "emidatabase-8b20c",
+    "storage_bucket": "emidatabase-8b20c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029019083123:android:c79e9845f4437b24",
+        "android_client_info": {
+          "package_name": "com.gmail.thangvnnc.emi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029019083123-pookurm2tm100gr7qs6apn023l3be3pp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gmail.thangvnnc.emi",
+            "certificate_hash": "054a41541d9f1ff25a5f0e4eb91fc27429d6af54"
+          }
+        },
+        {
+          "client_id": "1029019083123-sl8vcdb9j4gpn8d9iq3k131imn9ev0j6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUJwS7SB0z5spp_-ZS4mih71j_3qaQbmM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029019083123-sl8vcdb9j4gpn8d9iq3k131imn9ev0j6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

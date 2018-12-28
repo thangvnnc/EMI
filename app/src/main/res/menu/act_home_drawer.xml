@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_calc"
+            android:icon="@drawable/ic_cost"
+            android:title="Tính lãi suất" />
+        <item
+            android:id="@+id/nav_support"
+            android:icon="@drawable/ic_support"
+            android:title="Tư vấn viên" />
+        <item
+            android:id="@+id/nav_developer"
+            android:icon="@drawable/ic_teamwork"
+            android:title="Nhà phát triển" />
+        <item
+            android:id="@+id/nav_send"
+            android:icon="@drawable/ic_paper_plane"
+            android:title="Đóng góp ý kiến" />
+    </group>
+
+    <!--<item android:title="Hổ trợ">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_send"-->
+                <!--android:icon="@drawable/ic_paper_plane"-->
+                <!--android:title="Đóng góp ý kiến" />-->
+        <!--</menu>-->
+    <!--</item>-->
+
+</menu>
