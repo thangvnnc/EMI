@@ -24,7 +24,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
-                    android:text="1. Phiên bản 1.0.8: "
+                    android:text="1. Phiên bản 1.0.9: "
                     android:textColor="@color/text_color"
                     android:textSize="24sp" />
 
@@ -34,7 +34,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:singleLine="false"
-                    android:text="- Cập nhật thêm tính năng ghi chú sau khi tính lãi suất."
+                    android:text="- Nâng cấp tính năng đóng góp ý kiến đã được gửi lên cho server chúng tôi.\n- Thêm chức năng chọn 1 tháng trong bản chi tiết đóng tiền, hiện tổng tiền lãi và tổng tiền gốc đã trả tương ứng ở kỳ được chọn"
                     android:textColor="@color/text_color"
                     android:textSize="18sp" />
 
@@ -53,7 +53,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:singleLine="false"
-                    android:text="   -  - Hổ trợ chuyển đổi qua lại giữa lãi suất cố định và lãi suất giảm dần theo dư nợ. \n   - Xuất bảng báo cáo đóng lãi vay vốn.\n   - Hổ trợ tư vấn người dùng vay vốn.\n\nCác chức năng này sẽ được cập nhật phiên bản sau."
+                    android:text="   - Hổ trợ chuyển đổi qua lại giữa lãi suất cố định và lãi suất giảm dần theo dư nợ. \n   - Xuất bảng báo cáo đóng lãi vay vốn.\n   - Hổ trợ tư vấn người dùng vay vốn.\n\nCác chức năng này sẽ được cập nhật phiên bản sau."
                     android:textColor="@color/text_color"
                     android:textSize="18sp" />
 

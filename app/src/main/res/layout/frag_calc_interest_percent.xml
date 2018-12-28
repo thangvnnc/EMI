@@ -245,5 +245,13 @@
                 android:text="Bảng thông tin chi tiết" />
 
         </LinearLayout>
+        <TextView
+            android:padding="8dp"
+            android:text="Hãy ủng hộ chúng tôi bằng cách nhấn vào link quảng cáo bên dưới.\ Mỗi lần click của bạn sẽ tiếp động lực cho chúng tôi phát triển ứng dụng tốt hơn \n Xin cảm ơn"
+            style="@style/TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </TextView>
     </LinearLayout>
 </FrameLayout>

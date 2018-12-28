@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.gmail.thangvnnc.emi.Controller.Common;
 import com.gmail.thangvnnc.emi.Controller.CurrencyEditText;
 import com.gmail.thangvnnc.emi.Controller.EMI;
-import com.gmail.thangvnnc.emi.DBSQLite.History.DBHistoryEmi;
+import com.gmail.thangvnnc.emi.DBSQLite.History.History.DBHistoryEmi;
 import com.gmail.thangvnnc.emi.Dialog.DialogHistory;
 import com.gmail.thangvnnc.emi.Model.MEmiHistory;
 import com.gmail.thangvnnc.emi.R;

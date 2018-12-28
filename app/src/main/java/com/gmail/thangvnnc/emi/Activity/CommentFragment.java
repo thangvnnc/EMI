@@ -1,13 +1,11 @@
 package com.gmail.thangvnnc.emi.Activity;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +13,29 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gmail.thangvnnc.emi.DBSQLite.History.Support.DBComment;
+import com.gmail.thangvnnc.emi.DBServer.API.APIService;
+import com.gmail.thangvnnc.emi.DBServer.API.ApiUtils;
+import com.gmail.thangvnnc.emi.Model.MResponse;
+import com.gmail.thangvnnc.emi.Model.MSupport;
 import com.gmail.thangvnnc.emi.R;
+
+import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CommentFragment extends Fragment {
     private Context _context = null;
     private View _view = null;
 
-
+    private APIService _apiService = null;
     private EditText _edtComment = null;
     private Button _btnSend = null;
+    private String _content = "";
 
+    private final static String TAG = "CommentFragment";
 
     public CommentFragment() {
         // Required empty public constructor
@@ -40,6 +51,7 @@ public class CommentFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         _view = view;
+        _apiService = ApiUtils.getAPIService();
         initWidget(view);
         initEventButton();
     }
@@ -48,28 +60,43 @@ public class CommentFragment extends Fragment {
         _btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String message = _edtComment.getText().toString();
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(_context);
-                builder1.setTitle("Góp ý của bạn");
-                builder1.setMessage(message);
-                builder1.setCancelable(true);
-                builder1.setNegativeButton(
-                        "Nhắn tin",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                String message = _context.getString(R.string.phone_support);
-                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + message));
-                                intent.putExtra("sms_body", message);
-                                startActivity(intent);
-                                dialog.cancel();
-                            }
-                        });
-
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
+                _content = _edtComment.getText().toString();
+                if(!TextUtils.isEmpty(_content)) {
+                    sendPost(_content);
+                }
             }
         });
     }
+
+    public void sendPost(final String comment) {
+        _apiService.saveSupport(null, comment, new Date().getTime()).enqueue(new Callback<MResponse>() {
+            @Override
+            public void onResponse(Call<MResponse> call, Response<MResponse> response) {
+                Toast.makeText(_context, "Gửi thành công", Toast.LENGTH_LONG).show();
+                _edtComment.setText("");
+                Log.e(TAG, "OK");
+            }
+
+            @Override
+            public void onFailure(Call<MResponse> call, Throwable t) {
+                DBComment dbComment = new DBComment(_context);
+                MSupport mSupport = new MSupport();
+                mSupport.setContent(comment);
+                Date date = new Date();
+                mSupport.setCreatedAt(date.getTime());
+                dbComment.add(mSupport);
+                _edtComment.setText("");
+                Toast.makeText(_context, "Gửi thành công", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+//    public void showResponse(String response) {
+//        if(mResponseTv.getVisibility() == View.GONE) {
+//            mResponseTv.setVisibility(View.VISIBLE);
+//        }
+//        mResponseTv.setText(response);
+//    }
 
     private void initWidget(View view) {
         _btnSend = view.findViewById(R.id.btnSendComment);

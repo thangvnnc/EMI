@@ -3,7 +3,6 @@ package com.gmail.thangvnnc.emi.Dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.ListView;
 
 import com.gmail.thangvnnc.emi.Activity.CalcInterestPercentFragment;
 import com.gmail.thangvnnc.emi.Adapter.MEmiHistoryAdapter;
-import com.gmail.thangvnnc.emi.DBSQLite.History.DBHistoryEmi;
+import com.gmail.thangvnnc.emi.DBSQLite.History.History.DBHistoryEmi;
 import com.gmail.thangvnnc.emi.Model.MEmiHistory;
 import com.gmail.thangvnnc.emi.R;
 

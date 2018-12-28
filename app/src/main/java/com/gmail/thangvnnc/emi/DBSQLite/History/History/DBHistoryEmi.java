@@ -1,4 +1,4 @@
-package com.gmail.thangvnnc.emi.DBSQLite.History;
+package com.gmail.thangvnnc.emi.DBSQLite.History.History;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,11 +10,11 @@ import com.gmail.thangvnnc.emi.Model.MEmiHistory;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.gmail.thangvnnc.emi.DBSQLite.History.DBHistoryDefine.HistoryEntry.COLUMN_NAME_EMI;
-import static com.gmail.thangvnnc.emi.DBSQLite.History.DBHistoryDefine.HistoryEntry.COLUMN_NAME_ID;
-import static com.gmail.thangvnnc.emi.DBSQLite.History.DBHistoryDefine.HistoryEntry.COLUMN_NAME_LOAN_MOUNT;
-import static com.gmail.thangvnnc.emi.DBSQLite.History.DBHistoryDefine.HistoryEntry.COLUMN_NAME_NPAYMENTS;
-import static com.gmail.thangvnnc.emi.DBSQLite.History.DBHistoryDefine.HistoryEntry.TABLE_NAME;
+import static com.gmail.thangvnnc.emi.DBSQLite.History.History.DBHistoryDefine.HistoryEntry.COLUMN_NAME_EMI;
+import static com.gmail.thangvnnc.emi.DBSQLite.History.History.DBHistoryDefine.HistoryEntry.COLUMN_NAME_ID;
+import static com.gmail.thangvnnc.emi.DBSQLite.History.History.DBHistoryDefine.HistoryEntry.COLUMN_NAME_LOAN_MOUNT;
+import static com.gmail.thangvnnc.emi.DBSQLite.History.History.DBHistoryDefine.HistoryEntry.COLUMN_NAME_NPAYMENTS;
+import static com.gmail.thangvnnc.emi.DBSQLite.History.History.DBHistoryDefine.HistoryEntry.TABLE_NAME;
 
 public class DBHistoryEmi {
     public Context _context = null;

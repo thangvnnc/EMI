@@ -3,12 +3,16 @@ package com.gmail.thangvnnc.emi.Activity;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gmail.thangvnnc.emi.Adapter.MEmiAdapter;
 import com.gmail.thangvnnc.emi.Controller.Common;
+import com.gmail.thangvnnc.emi.Controller.EMI;
+import com.gmail.thangvnnc.emi.Dialog.DialogInterestDetail;
 import com.gmail.thangvnnc.emi.Model.MEmi;
 import com.gmail.thangvnnc.emi.R;
 
@@ -16,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReportDetail extends AppCompatActivity {
-    private Context mContext = null;
+    private Context _context = null;
 
     private TextView _txtLoanAmount = null;
     private TextView _txtTotalAll = null;
@@ -41,7 +45,7 @@ public class ReportDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_report_detail);
         setTitle("Bản chi tiết đóng tiền");
-        mContext = this;
+        _context = this;
 
         getData();
         initWidget();
@@ -71,11 +75,11 @@ public class ReportDetail extends AppCompatActivity {
             _txtTotalAll.setText(totalAll);
             _txtEmi.setText(emi);
 
-            _mEmiAdapter = new MEmiAdapter(mContext, emis);
+            _mEmiAdapter = new MEmiAdapter(_context, emis);
             _lvReport.setAdapter(_mEmiAdapter);
         } catch (Exception ex) {
             ex.printStackTrace();
-            Toast.makeText(mContext, "Lỗi exception", Toast.LENGTH_SHORT).show();
+            Toast.makeText(_context, "Lỗi exception", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -88,6 +92,16 @@ public class ReportDetail extends AppCompatActivity {
         _txtPercent = findViewById(R.id.txtPercent);
         _txtEmi = findViewById(R.id.txtEMI);
         _lvReport = findViewById(R.id.lvReport);
+        
+        _lvReport.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final List<MEmi> emiList = emis;
+                DialogInterestDetail dialogInterestDetail = new DialogInterestDetail(_context);
+                dialogInterestDetail.setData(emiList, i);
+                dialogInterestDetail.show();
+            }
+        });
     }
 
     private void calcData() {

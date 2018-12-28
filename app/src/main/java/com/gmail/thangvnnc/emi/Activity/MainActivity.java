@@ -24,22 +24,37 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gmail.thangvnnc.emi.DBSQLite.History.Support.DBComment;
+import com.gmail.thangvnnc.emi.DBServer.API.APIService;
+import com.gmail.thangvnnc.emi.DBServer.API.ApiUtils;
 import com.gmail.thangvnnc.emi.Dialog.DialogHistory;
+import com.gmail.thangvnnc.emi.Model.MResponse;
+import com.gmail.thangvnnc.emi.Model.MSupport;
 import com.gmail.thangvnnc.emi.R;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+
+import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private final static String TAG = "MainActivity";
 
+    private Menu _menu = null;
     private CalcInterestPercentFragment _frgInterest = null;
     private AboutFragment _frgAbout = null;
     private CommentFragment _frgComment = null;
-    private Context mContext = null;
+    private Context _context = null;
     private AdView mAdView = null;
+    private APIService _apiService = null;
+    private DBComment _dbComment = null;
 
     private final static String TITLE_INTEREST = "Tính lãi suất";
     private final static String TITLE_DEVELOPER = "Nhà phát triển";
@@ -64,11 +79,12 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
-        mContext = this;
+        _context = this;
 
-        _frgInterest = CalcInterestPercentFragment.newInstance(mContext);
-        _frgAbout = AboutFragment.newInstance(mContext);
-        _frgComment = CommentFragment.newInstance(mContext);
+        _frgInterest = CalcInterestPercentFragment.newInstance(_context);
+        _frgAbout = AboutFragment.newInstance(_context);
+        _frgComment = CommentFragment.newInstance(_context);
+        _apiService = ApiUtils.getAPIService();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -80,13 +96,13 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         setTitle(TITLE_INTEREST);
-        replace(CalcInterestPercentFragment.newInstance(mContext));
+        replace(CalcInterestPercentFragment.newInstance(_context));
 
         initAdView();
     }
 
     private void initAdView() {
-        MobileAds.initialize(mContext, "ca-app-pub-1815534300099898~2918478086");
+        MobileAds.initialize(_context, "ca-app-pub-1815534300099898~2918478086");
 
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -142,6 +158,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        _menu = menu;
         return true;
     }
 
@@ -151,7 +168,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            DialogHistory dialogHistory = new DialogHistory(mContext);
+            DialogHistory dialogHistory = new DialogHistory(_context);
             dialogHistory.show();
             return true;
         }
@@ -162,22 +179,30 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        if (id == R.id.nav_calc) {
-            setTitle(TITLE_INTEREST);
-            replace(_frgInterest);
+        _menu.getItem(0).setVisible(false);
+
+        switch (item.getItemId()) {
+            case R.id.nav_calc:
+                setTitle(TITLE_INTEREST);
+                replace(_frgInterest);
+                _menu.getItem(0).setVisible(true);
+                break;
+
+            case R.id.nav_support:
+                showDialogSupporter();
+                break;
+
+            case R.id.nav_developer:
+                setTitle(TITLE_DEVELOPER);
+                replace(_frgAbout);
+                break;
+
+            case R.id.nav_send:
+                setTitle(TITLE_SEND);
+                replace(_frgComment);
+                break;
         }
-        else if (id == R.id.nav_support) {
-            showDialogSupporter();
-        }
-        else if (id == R.id.nav_developer) {
-            setTitle(TITLE_DEVELOPER);
-            replace(_frgAbout);
-        } else if (id == R.id.nav_send) {
-            setTitle(TITLE_SEND);
-            replace(_frgComment);
-        }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -185,8 +210,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showDialogSupporter() {
-        final String message = mContext.getString(R.string.phone_support);
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(mContext);
+        final String message = _context.getString(R.string.phone_support);
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(_context);
         builder1.setTitle("Hổ trợ tư vấn lãi suất");
         builder1.setMessage("Bạn có nhu cầu vay vốn hãy liên hệ đến tôi qua số điện thoại " + message+ "\nGặp Cẩm Tiên");
         builder1.setCancelable(true);
@@ -205,7 +230,7 @@ public class MainActivity extends AppCompatActivity
                 "Nhắn tin",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String message = mContext.getString(R.string.phone_support);
+                        String message = _context.getString(R.string.phone_support);
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + message));
                         intent.putExtra("sms_body", "Hãy tư vấn vay giúp tôi. Tôi muốn vay ");
                         startActivity(intent);
@@ -237,5 +262,32 @@ public class MainActivity extends AppCompatActivity
             }
         }
         return ret;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        _dbComment = new DBComment(_context);
+        List<MSupport> mSupportList = _dbComment.getAll();
+
+        for(int idx = 0; idx < mSupportList.size(); idx++) {
+            MSupport mSupport = mSupportList.get(idx);
+            sendPost(mSupport);
+        }
+    }
+
+    public void sendPost(final MSupport mSupport) {
+        _apiService.saveSupport(null, mSupport.getContent(), new Date().getTime()).enqueue(new Callback<MResponse>() {
+            @Override
+            public void onResponse(Call<MResponse> call, Response<MResponse> response) {
+                boolean delete = _dbComment.delete(mSupport.getId());
+                Log.w(TAG, "Trạng thái gửi: " + delete);
+            }
+
+            @Override
+            public void onFailure(Call<MResponse> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
     }
 }
