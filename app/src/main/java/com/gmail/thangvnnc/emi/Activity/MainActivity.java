@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -59,8 +60,8 @@ public class MainActivity extends AppCompatActivity
     private final static String TITLE_INTEREST = "Tính lãi suất";
     private final static String TITLE_DEVELOPER = "Nhà phát triển";
     private final static String TITLE_SEND = "Đóng góp ý kiến";
-    private final static String TITLE_REPORT_INTEREST = "Báo cáo lãi giảm dần";
-    private final static String TITLE_REPORT_PERCENT = "Báo cáo lãi cố định";
+
+    String androidId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity
         _frgComment = CommentFragment.newInstance(_context);
         _apiService = ApiUtils.getAPIService();
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -98,7 +100,33 @@ public class MainActivity extends AppCompatActivity
         setTitle(TITLE_INTEREST);
         replace(CalcInterestPercentFragment.newInstance(_context));
 
+        try {
+            androidId = Settings.Secure.getString(_context.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+        }
+        catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+        }
+
         initAdView();
+
+        sendAndroid();
+    }
+
+    private void sendAndroid() {
+        if (androidId == null) return;
+
+        _apiService.saveDevice(null, androidId, new Date().getTime()).enqueue(new Callback<MResponse>() {
+            @Override
+            public void onResponse(Call<MResponse> call, Response<MResponse> response) {
+                Log.w(TAG, "sendAndroid");
+            }
+
+            @Override
+            public void onFailure(Call<MResponse> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
     }
 
     private void initAdView() {
@@ -120,20 +148,24 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public void onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
+            public void onAdLeftApplication () {
+                sendAdmod();
+            }
+        });
+    }
+
+    private void sendAdmod() {
+        if (androidId == null) return;
+
+        _apiService.saveAdmod(null, androidId, new Date().getTime()).enqueue(new Callback<MResponse>() {
+            @Override
+            public void onResponse(Call<MResponse> call, Response<MResponse> response) {
+                Log.w(TAG, "sendAddmod");
             }
 
             @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Code to be executed when when the user is about to return
-                // to the app after tapping on an ad.
+            public void onFailure(Call<MResponse> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
             }
         });
     }
@@ -272,11 +304,11 @@ public class MainActivity extends AppCompatActivity
 
         for(int idx = 0; idx < mSupportList.size(); idx++) {
             MSupport mSupport = mSupportList.get(idx);
-            sendPost(mSupport);
+            sendSupport(mSupport);
         }
     }
 
-    public void sendPost(final MSupport mSupport) {
+    public void sendSupport(final MSupport mSupport) {
         _apiService.saveSupport(null, mSupport.getContent(), new Date().getTime()).enqueue(new Callback<MResponse>() {
             @Override
             public void onResponse(Call<MResponse> call, Response<MResponse> response) {

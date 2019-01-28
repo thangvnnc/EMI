@@ -28,9 +28,4 @@ public class Common {
                 .setAction("Action", null).show();
     }
 
-//    public static String convertTextToCurrentcy(String text, String charFormat) {
-//        String ori = text;
-//        String content = text.replace(" ", "");
-//
-//    }
 }

@@ -32,10 +32,4 @@
         android:layout_height="wrap_content"
         android:text="Báo cáo đóng tiền theo kỳ hạn" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Version : 1.0.8" />
-
 </LinearLayout>
