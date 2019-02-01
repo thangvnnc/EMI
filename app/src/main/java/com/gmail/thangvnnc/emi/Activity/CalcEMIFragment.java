@@ -163,10 +163,7 @@ public class CalcEMIFragment extends Fragment {
 //        String totalInterestRatePaymentString = Common.formatCurrency(totalInterestRatePayment);
 //        _txtTotalInterestRatePayment.setText(totalInterestRatePaymentString);
 //
-//        totalAllD = EMI.calTotalInterestAll(loanAmountD, interestD, nPaymentsI);
-//        String totalAllString = Common.formatCurrency(totalAllD);
-//        _txtTotalAll.setText(totalAllString);
-
+        totalAllD = EMI.calTotalInterestAll(loanAmountD, interestD, nPaymentsI);
         percentD = EMI.calculatePercent(loanAmountD, totalInterestRatePayment, nPaymentsI);
         _txtPercent.setText(String.valueOf(percentD));
 
