@@ -45,7 +45,6 @@ public class EMI {
         return Math.round(interest * 100) / 100d;
     }
 
-
     public static double calEmi(double loanAmount, double interest, double nPayments) {
         double percent = interest / 100;
         double temp = Math.pow(1 + percent, nPayments);

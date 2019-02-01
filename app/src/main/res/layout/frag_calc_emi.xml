@@ -37,16 +37,16 @@
             <TextView
                 android:layout_width="@dimen/width_title"
                 android:layout_height="wrap_content"
-                android:text="Số tiền trả : "
+                android:text="Lãi suất : "
                 android:textAlignment="textEnd"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size_title" />
 
-            <com.gmail.thangvnnc.emi.Controller.CurrencyEditText
-                android:id="@+id/edtEMI"
+            <EditText
+                android:id="@+id/edtInterest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Số tiển trả/lần góp"
+                android:hint="Lãi suất theo dư nợ"
                 android:inputType="numberDecimal|numberSigned"
                 android:textSize="@dimen/text_size_data" />
         </LinearLayout>
@@ -87,32 +87,36 @@
                 android:layout_width="@dimen/width_title"
                 android:layout_height="match_parent"
                 android:gravity="right|center_vertical"
-                android:text="Lãi giảm dần : "
+                android:text="Số tiền góp : "
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size_title" />
 
             <TextView
-                android:id="@+id/txtInterestRate"
+                android:id="@+id/txtEmi"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="left|center_vertical"
                 android:text="0"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size_data" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="left|center_vertical"
-                android:text=" %"
+                android:text=" Vnđ/kỳ"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size_data" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/width_title"
                 android:layout_height="match_parent"
                 android:gravity="right|center_vertical"
-                android:text="    Cố định : "
+                android:text="Lãi cố định : "
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size_title" />
 
@@ -136,71 +140,10 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp">
-
-            <TextView
-                android:layout_width="@dimen/width_title"
-                android:layout_height="match_parent"
-                android:gravity="right|center_vertical"
-                android:text="Tổng lãi : "
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_title" />
-
-            <TextView
-                android:id="@+id/txtTotalInterestRatePayment"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="left|center_vertical"
-                android:text="0"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_data" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="left|center_vertical"
-                android:text=" Vnđ"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_data" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginBottom="4dp">
-
-            <TextView
-                android:layout_width="@dimen/width_title"
-                android:layout_height="match_parent"
-                android:gravity="right|center_vertical"
-                android:text="Tổng cộng : "
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_title" />
-
-            <TextView
-                android:id="@+id/txtTotalAll"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="left|center_vertical"
-                android:text="0"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_data" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="left|center_vertical"
-                android:text=" Vnđ"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_data" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
-            android:background="@color/colorPrimaryDark"/>
+            android:background="@color/colorPrimaryDark" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -236,6 +179,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:visibility="gone">
+
             <Button
                 android:id="@+id/btnDetails"
                 style="@style/Button_Primary"
@@ -247,16 +191,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
-                android:padding="8dp"
-                android:text="Hãy ủng hộ chúng tôi bằng cách nhấn vào link quảng cáo bên dưới.\ Mỗi lần click của bạn sẽ tiếp động lực cho chúng tôi phát triển ứng dụng tốt hơn \n Xin cảm ơn"
                 style="@style/TextView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </TextView>
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Hãy ủng hộ chúng tôi bằng cách nhấn vào link quảng cáo bên dưới.\ Mỗi lần click của bạn sẽ tiếp động lực cho chúng tôi phát triển ứng dụng tốt hơn \n Xin cảm ơn"></TextView>
 
 
         </LinearLayout>

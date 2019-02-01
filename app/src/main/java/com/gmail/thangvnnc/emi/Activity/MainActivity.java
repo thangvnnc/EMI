@@ -23,7 +23,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.gmail.thangvnnc.emi.DBSQLite.History.Support.DBComment;
 import com.gmail.thangvnnc.emi.DBServer.API.APIService;
@@ -50,6 +49,7 @@ public class MainActivity extends AppCompatActivity
 
     private Menu _menu = null;
     private CalcInterestPercentFragment _frgInterest = null;
+    private CalcEMIFragment _frgEmi = null;
     private AboutFragment _frgAbout = null;
     private CommentFragment _frgComment = null;
     private Context _context = null;
@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity
     private DBComment _dbComment = null;
 
     private final static String TITLE_INTEREST = "Tính lãi suất";
+    private final static String TITLE_EMI = "Tính tiền góp";
     private final static String TITLE_DEVELOPER = "Nhà phát triển";
     private final static String TITLE_SEND = "Đóng góp ý kiến";
 
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity
         _context = this;
 
         _frgInterest = CalcInterestPercentFragment.newInstance(_context);
+        _frgEmi = CalcEMIFragment.newInstance(_context);
         _frgAbout = AboutFragment.newInstance(_context);
         _frgComment = CommentFragment.newInstance(_context);
         _apiService = ApiUtils.getAPIService();
@@ -108,8 +110,9 @@ public class MainActivity extends AppCompatActivity
             Log.d(TAG, e.getMessage());
         }
 
-        initAdView();
-
+        if ("691f5cd0002b2778".equals(androidId) == false) {
+            initAdView();
+        }
         sendAndroid();
     }
 
@@ -214,10 +217,15 @@ public class MainActivity extends AppCompatActivity
         _menu.getItem(0).setVisible(false);
 
         switch (item.getItemId()) {
-            case R.id.nav_calc:
+            case R.id.nav_calc_interest:
                 setTitle(TITLE_INTEREST);
                 replace(_frgInterest);
                 _menu.getItem(0).setVisible(true);
+                break;
+
+            case R.id.nav_calc_emi:
+                setTitle(TITLE_EMI);
+                replace(_frgEmi);
                 break;
 
             case R.id.nav_support:

@@ -2,33 +2,61 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_calc"
-            android:icon="@drawable/ic_cost"
-            android:title="Tính lãi suất" />
-        <item
-            android:id="@+id/nav_support"
-            android:icon="@drawable/ic_support"
-            android:title="Tư vấn viên" />
-        <item
-            android:id="@+id/nav_developer"
-            android:icon="@drawable/ic_teamwork"
-            android:title="Nhà phát triển" />
-        <item
-            android:id="@+id/nav_send"
-            android:icon="@drawable/ic_paper_plane"
-            android:title="Đóng góp ý kiến" />
+    <item android:title="Tính toán">
+        <menu>
+            <item
+                android:id="@+id/nav_calc_interest"
+                android:icon="@drawable/ic_cost"
+                android:title="Tính lãi suất" />
+            <item
+                android:id="@+id/nav_calc_emi"
+                android:icon="@drawable/ic_cost"
+                android:title="Tính tiền góp" />
+        </menu>
+    </item>
+    <!--<group android:checkableBehavior="single">-->
+    <!--<item-->
+    <!--android:id="@+id/nav_calc_interest"-->
+    <!--android:icon="@drawable/ic_cost"-->
+    <!--android:title="Tính lãi suất" />-->
+    <!--<item-->
+    <!--android:id="@+id/nav_calc_emi"-->
+    <!--android:icon="@drawable/ic_cost"-->
+    <!--android:title="Tính tiền góp" />-->
+    <!--&lt;!&ndash;<item&ndash;&gt;-->
+    <!--&lt;!&ndash;android:id="@+id/nav_support"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:icon="@drawable/ic_support"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:title="Tư vấn viên" />&ndash;&gt;-->
+    <!--&lt;!&ndash;<item&ndash;&gt;-->
+    <!--&lt;!&ndash;android:id="@+id/nav_developer"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:icon="@drawable/ic_teamwork"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:title="Nhà phát triển" />&ndash;&gt;-->
+    <!--&lt;!&ndash;<item&ndash;&gt;-->
+    <!--&lt;!&ndash;android:id="@+id/nav_send"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:icon="@drawable/ic_paper_plane"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:title="Đóng góp ý kiến" />&ndash;&gt;-->
+    <!--</group>-->
+    <item android:title="Tư vấn">
+        <menu>
+            <item
+                android:id="@+id/nav_support"
+                android:icon="@drawable/ic_support"
+                android:title="Tư vấn viên" />
+        </menu>
+    </item>
+    <item android:title="Hổ trợ">
+        <menu>
+            <item
+                android:id="@+id/nav_developer"
+                android:icon="@drawable/ic_teamwork"
+                android:title="Nhà phát triển" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_paper_plane"
+                android:title="Đóng góp ý kiến" />
+        </menu>
+    </item>
+
     </group>
-
-    <!--<item android:title="Hổ trợ">-->
-        <!--<menu>-->
-            <!--<item-->
-                <!--android:id="@+id/nav_send"-->
-                <!--android:icon="@drawable/ic_paper_plane"-->
-                <!--android:title="Đóng góp ý kiến" />-->
-        <!--</menu>-->
-    <!--</item>-->
-
 </menu>

@@ -65,7 +65,7 @@ public class CurrencyEditText extends android.support.v7.widget.AppCompatEditTex
     public CurrencyEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        this.setHint("#,###.00");
+//        this.setHint("#,###.00");
         this.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_LENGTH)});
     }
 

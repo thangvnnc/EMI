@@ -24,18 +24,16 @@ import com.gmail.thangvnnc.emi.Dialog.DialogHistory;
 import com.gmail.thangvnnc.emi.Model.MEmiHistory;
 import com.gmail.thangvnnc.emi.R;
 
-public class CalcInterestPercentFragment extends Fragment {
+public class CalcEMIFragment extends Fragment {
     private Context _context = null;
     private View _view = null;
 
     private CurrencyEditText _edtLoanAmount = null;
     private EditText _edtNPayments = null;
-    private CurrencyEditText _edtEMI = null;
+    private EditText _edtInterest = null;
 
-    private TextView _txtInterestRate = null;
+    private TextView _txtEmi = null;
     private TextView _txtPercent = null;
-    private TextView _txtTotalInterestRatePayment = null;
-    private TextView _txtTotalAll = null;
 
     private Button _btnCalc = null;
     private Button _btnDetails = null;
@@ -43,7 +41,6 @@ public class CalcInterestPercentFragment extends Fragment {
     private Button _btnReset = null;
     private Button _btnResetAll = null;
 
-    public static Handler handler = null;
     public final static String INTENT_LOANAMOUNT = "LOANAMOUNT";
     public final static String INTENT_INTEREST = "INTEREST";
     public final static String INTENT_PERCENT = "PERCENT";
@@ -58,11 +55,11 @@ public class CalcInterestPercentFragment extends Fragment {
     private double percentD = 0;
     private double totalAllD = 0;
 
-    public CalcInterestPercentFragment() {
+    public CalcEMIFragment() {
     }
 
-    public static CalcInterestPercentFragment newInstance(Context context) {
-        CalcInterestPercentFragment fragment = new CalcInterestPercentFragment();
+    public static CalcEMIFragment newInstance(Context context) {
+        CalcEMIFragment fragment = new CalcEMIFragment();
         fragment._context = context;
         return fragment;
     }
@@ -70,12 +67,10 @@ public class CalcInterestPercentFragment extends Fragment {
     private void initWidget(View view) {
         _edtLoanAmount = view.findViewById(R.id.edtLoanAmount);
         _edtNPayments = view.findViewById(R.id.edtNPayments);
-        _edtEMI = view.findViewById(R.id.edtEMI);
+        _edtInterest = view.findViewById(R.id.edtInterest);
 
-        _txtInterestRate = view.findViewById(R.id.txtInterestRate);
+        _txtEmi = view.findViewById(R.id.txtEmi);
         _txtPercent = view.findViewById(R.id.txtPercent);
-        _txtTotalInterestRatePayment = view.findViewById(R.id.txtTotalInterestRatePayment);
-        _txtTotalAll = view.findViewById(R.id.txtTotalAll);
 
         _btnCalc = view.findViewById(R.id.btnCalc);
         _btnDetails = view.findViewById(R.id.btnDetails);
@@ -83,27 +78,6 @@ public class CalcInterestPercentFragment extends Fragment {
         _btnResetAll = view.findViewById(R.id.btnResetAll);
 
         _lnlControl = view.findViewById(R.id.lnlControl);
-        handler = mHandler;
-    }
-
-    @SuppressLint("HandlerLeak") public Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (DialogHistory.DLG_HISTORY_RESULT == msg.what) {
-                MEmiHistory mEmiHistory = (MEmiHistory) msg.obj;
-                setValueFragment(mEmiHistory);
-            }
-        }
-    };
-
-    private void setValueFragment(MEmiHistory mEmiHistory) {
-        loanAmountD = mEmiHistory.loanAmount;
-        emiD =  mEmiHistory.emi;
-        nPaymentsI = mEmiHistory.nPayment;
-        _edtLoanAmount.setText(CurrencyEditText.formatDec(loanAmountD+""));
-        _edtEMI.setText(CurrencyEditText.formatDec(emiD+""));
-        _edtNPayments.setText(nPaymentsI+"");
-        calc();
     }
 
     @Override
@@ -118,33 +92,24 @@ public class CalcInterestPercentFragment extends Fragment {
     private boolean isValid() {
         String loanAmount = _edtLoanAmount.getText().toString();
         String nPayments = _edtNPayments.getText().toString();
-        String edtEMI = _edtEMI.getText().toString();
+        String edtInterest = _edtInterest.getText().toString();
 
-        if ("".equals(loanAmount) || "".equals(nPayments) || "".equals(edtEMI)) {
+        if ("".equals(loanAmount) || "".equals(nPayments) || "".equals(edtInterest)) {
             return false;
         }
         loanAmountD = _edtLoanAmount.getDoubleValue();
         nPaymentsI = Integer.parseInt(nPayments);
-        emiD = _edtEMI.getDoubleValue();
+        interestD = Double.parseDouble(edtInterest);
 
-        if (loanAmountD <= 0 || nPaymentsI <= 0 || emiD <= 0) {
+        if (loanAmountD <= 0 || nPaymentsI <= 0 || interestD <= 0) {
             return false;
         }
 
-        if (loanAmountD < emiD) {
+        if (interestD >= 100) {
             return false;
         }
 
-        if (loanAmountD > nPaymentsI*emiD) {
-            return false;
-        }
         return true;
-    }
-
-    private void saveHistory(){
-        DBHistoryEmi dbHistoryEmi = new DBHistoryEmi(_context);
-        MEmiHistory mEmiHistory = new MEmiHistory(loanAmountD, emiD, nPaymentsI);
-        dbHistoryEmi.add(mEmiHistory);
     }
 
     private void initEventButton() {
@@ -156,7 +121,6 @@ public class CalcInterestPercentFragment extends Fragment {
                     return;
                 }
                 calc();
-                saveHistory();
             }
         });
 
@@ -187,33 +151,32 @@ public class CalcInterestPercentFragment extends Fragment {
                 setEnableEdittext(true);
                 _edtLoanAmount.setText("");
                 _edtNPayments.setText("");
-                _edtEMI.setText("");
+                _edtInterest.setText("");
             }
         });
     }
 
     private void calc() {
         setEnableEdittext(false);
-
-        interestD = EMI.calInterest(loanAmountD, emiD, nPaymentsI);
-        _txtInterestRate.setText(String.valueOf(interestD));
-
+        emiD = EMI.calEmi(loanAmountD, interestD, nPaymentsI);
         double totalInterestRatePayment = EMI.calTotalInterestRatePayment(loanAmountD, interestD, nPaymentsI);
-        String totalInterestRatePaymentString = Common.formatCurrency(totalInterestRatePayment);
-        _txtTotalInterestRatePayment.setText(totalInterestRatePaymentString);
-
-        totalAllD = EMI.calTotalInterestAll(loanAmountD, interestD, nPaymentsI);
-        String totalAllString = Common.formatCurrency(totalAllD);
-        _txtTotalAll.setText(totalAllString);
+//        String totalInterestRatePaymentString = Common.formatCurrency(totalInterestRatePayment);
+//        _txtTotalInterestRatePayment.setText(totalInterestRatePaymentString);
+//
+//        totalAllD = EMI.calTotalInterestAll(loanAmountD, interestD, nPaymentsI);
+//        String totalAllString = Common.formatCurrency(totalAllD);
+//        _txtTotalAll.setText(totalAllString);
 
         percentD = EMI.calculatePercent(loanAmountD, totalInterestRatePayment, nPaymentsI);
         _txtPercent.setText(String.valueOf(percentD));
+
+        _txtEmi.setText(Common.formatCurrency(emiD));
     }
 
     public void setEnableEdittext(boolean enableEdittext) {
         _edtLoanAmount.setEnabled(enableEdittext);
         _edtNPayments.setEnabled(enableEdittext);
-        _edtEMI.setEnabled(enableEdittext);
+        _edtInterest.setEnabled(enableEdittext);
 
         _btnReset.setVisibility(View.VISIBLE);
         _lnlControl.setVisibility(View.VISIBLE);
@@ -224,10 +187,8 @@ public class CalcInterestPercentFragment extends Fragment {
             _lnlControl.setVisibility(View.GONE);
             _btnCalc.setVisibility(View.VISIBLE);
 
-            _txtInterestRate.setText("0");
             _txtPercent.setText("0");
-            _txtTotalAll.setText("0");
-            _txtTotalInterestRatePayment.setText("0");
+            _txtEmi.setText("0");
         }
     }
 
@@ -240,6 +201,6 @@ public class CalcInterestPercentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.frag_calc_interest_percent, container, false);
+        return inflater.inflate(R.layout.frag_calc_emi, container, false);
     }
 }
