@@ -23,6 +23,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.gmail.thangvnnc.emi.DBSQLite.History.Support.DBComment;
 import com.gmail.thangvnnc.emi.DBServer.API.APIService;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity
     private AdView mAdView = null;
     private APIService _apiService = null;
     private DBComment _dbComment = null;
+    private TextView _btnClickContact = null;
 
     private final static String TITLE_INTEREST = "Tính lãi suất";
     private final static String TITLE_EMI = "Tính tiền góp";
@@ -102,6 +104,8 @@ public class MainActivity extends AppCompatActivity
         setTitle(TITLE_INTEREST);
         replace(CalcInterestPercentFragment.newInstance(_context));
 
+        _btnClickContact = findViewById(R.id.btnClickContact);
+
         try {
             androidId = Settings.Secure.getString(_context.getContentResolver(),
                     Settings.Secure.ANDROID_ID);
@@ -110,10 +114,17 @@ public class MainActivity extends AppCompatActivity
             Log.d(TAG, e.getMessage());
         }
 
-        if ("691f5cd0002b2778".equals(androidId) == false) {
-            initAdView();
-        }
+//        if ("691f5cd0002b2778".equals(androidId) == false) {
+        initAdView();
+//        }
         sendAndroid();
+
+        _btnClickContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialogSupporter();
+            }
+        });
     }
 
     private void sendAndroid() {
