@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -26,6 +27,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
+import com.facebook.ads.AudienceNetworkAds;
 import com.gmail.thangvnnc.emi.DBSQLite.History.Support.DBComment;
 import com.gmail.thangvnnc.emi.DBServer.API.APIService;
 import com.gmail.thangvnnc.emi.DBServer.API.ApiUtils;
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity
     private AboutFragment _frgAbout = null;
     private CommentFragment _frgComment = null;
     private Context _context = null;
-//    private AdView mAdView = null;
+    private AdView adView = null;
     private APIService _apiService = null;
     private DBComment _dbComment = null;
 
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_home);
-
+        AudienceNetworkAds.initialize(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -111,6 +115,8 @@ public class MainActivity extends AppCompatActivity
             Log.d(TAG, e.getMessage());
         }
 
+        initAdView();
+
 //        if ("691f5cd0002b2778".equals(androidId) == false) {
 //        initAdView();
 //        }
@@ -133,7 +139,27 @@ public class MainActivity extends AppCompatActivity
 //        });
 //    }
 
-//    private void initAdView() {
+    @Override
+    protected void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
+    }
+
+    private void initAdView() {
+        // Find the Ad Container
+        LinearLayout adContainer = (LinearLayout) findViewById(R.id.adView);
+        adView = new AdView(this, "419658932419622_419681735750675", AdSize.RECTANGLE_HEIGHT_250);
+//        adView = new AdView(this, "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID", AdSize.RECTANGLE_HEIGHT_250);
+
+        // Add the ad view to your activity layout
+        adContainer.addView(adView);
+
+        // Request an ad
+        adView.loadAd();
+
+        // GOOGLE ADMOD
 //        MobileAds.initialize(_context, "ca-app-pub-1815534300099898~2918478086");
 //
 //        mAdView = findViewById(R.id.adView);
@@ -156,7 +182,7 @@ public class MainActivity extends AppCompatActivity
 //                sendAdmod();
 //            }
 //        });
-//    }
+    }
 
 //    private void sendAdmod() {
 //        if (androidId == null) return;

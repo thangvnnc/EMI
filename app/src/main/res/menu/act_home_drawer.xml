@@ -37,7 +37,7 @@
     <!--&lt;!&ndash;android:icon="@drawable/ic_paper_plane"&ndash;&gt;-->
     <!--&lt;!&ndash;android:title="Đóng góp ý kiến" />&ndash;&gt;-->
     <!--</group>-->
-    <item android:title="Tư vấn">
+    <item android:visible="false" android:title="Tư vấn">
         <menu>
             <item
                 android:id="@+id/nav_support"
