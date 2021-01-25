@@ -3,8 +3,9 @@ package com.gmail.thangvnnc.emi.Dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.gmail.thangvnnc.emi.Controller.Common;
 import com.gmail.thangvnnc.emi.Model.MEmi;

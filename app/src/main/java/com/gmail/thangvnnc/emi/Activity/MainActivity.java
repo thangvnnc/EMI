@@ -1,5 +1,6 @@
 package com.gmail.thangvnnc.emi.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,15 +8,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +15,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.gmail.thangvnnc.emi.DBSQLite.History.Support.DBComment;
 import com.gmail.thangvnnc.emi.DBServer.API.APIService;
@@ -32,10 +33,7 @@ import com.gmail.thangvnnc.emi.Dialog.DialogHistory;
 import com.gmail.thangvnnc.emi.Model.MResponse;
 import com.gmail.thangvnnc.emi.Model.MSupport;
 import com.gmail.thangvnnc.emi.R;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.Date;
 import java.util.List;
@@ -54,10 +52,9 @@ public class MainActivity extends AppCompatActivity
     private AboutFragment _frgAbout = null;
     private CommentFragment _frgComment = null;
     private Context _context = null;
-    private AdView mAdView = null;
+//    private AdView mAdView = null;
     private APIService _apiService = null;
     private DBComment _dbComment = null;
-    private TextView _btnClickContact = null;
 
     private final static String TITLE_INTEREST = "Tính lãi suất";
     private final static String TITLE_EMI = "Tính tiền góp";
@@ -66,6 +63,7 @@ public class MainActivity extends AppCompatActivity
 
     String androidId = null;
 
+    @SuppressLint("HardwareIds")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,7 +102,6 @@ public class MainActivity extends AppCompatActivity
         setTitle(TITLE_INTEREST);
         replace(CalcInterestPercentFragment.newInstance(_context));
 
-        _btnClickContact = findViewById(R.id.btnClickContact);
 
         try {
             androidId = Settings.Secure.getString(_context.getContentResolver(),
@@ -115,74 +112,67 @@ public class MainActivity extends AppCompatActivity
         }
 
 //        if ("691f5cd0002b2778".equals(androidId) == false) {
-        initAdView();
+//        initAdView();
 //        }
-        sendAndroid();
-
-        _btnClickContact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDialogSupporter();
-            }
-        });
+//        sendAndroid();
     }
 
-    private void sendAndroid() {
-        if (androidId == null) return;
+//    private void sendAndroid() {
+//        if (androidId == null) return;
+//
+//        _apiService.saveDevice(null, androidId, new Date().getTime()).enqueue(new Callback<MResponse>() {
+//            @Override
+//            public void onResponse(Call<MResponse> call, Response<MResponse> response) {
+//                Log.w(TAG, "sendAndroid");
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MResponse> call, Throwable t) {
+//                Log.e(TAG, t.getMessage());
+//            }
+//        });
+//    }
 
-        _apiService.saveDevice(null, androidId, new Date().getTime()).enqueue(new Callback<MResponse>() {
-            @Override
-            public void onResponse(Call<MResponse> call, Response<MResponse> response) {
-                Log.w(TAG, "sendAndroid");
-            }
+//    private void initAdView() {
+//        MobileAds.initialize(_context, "ca-app-pub-1815534300099898~2918478086");
+//
+//        mAdView = findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        mAdView.loadAd(adRequest);
+//        mAdView.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//                // Code to be executed when an ad finishes loading.
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                // Code to be executed when an ad request fails.
+//                Log.v("onAdFailedToLoad", errorCode+"");
+//            }
+//
+//            @Override
+//            public void onAdLeftApplication () {
+//                sendAdmod();
+//            }
+//        });
+//    }
 
-            @Override
-            public void onFailure(Call<MResponse> call, Throwable t) {
-                Log.e(TAG, t.getMessage());
-            }
-        });
-    }
-
-    private void initAdView() {
-        MobileAds.initialize(_context, "ca-app-pub-1815534300099898~2918478086");
-
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                // Code to be executed when an ad request fails.
-                Log.v("onAdFailedToLoad", errorCode+"");
-            }
-
-            @Override
-            public void onAdLeftApplication () {
-                sendAdmod();
-            }
-        });
-    }
-
-    private void sendAdmod() {
-        if (androidId == null) return;
-
-        _apiService.saveAdmod(null, androidId, new Date().getTime()).enqueue(new Callback<MResponse>() {
-            @Override
-            public void onResponse(Call<MResponse> call, Response<MResponse> response) {
-                Log.w(TAG, "sendAddmod");
-            }
-
-            @Override
-            public void onFailure(Call<MResponse> call, Throwable t) {
-                Log.e(TAG, t.getMessage());
-            }
-        });
-    }
+//    private void sendAdmod() {
+//        if (androidId == null) return;
+//
+//        _apiService.saveAdmod(null, androidId, new Date().getTime()).enqueue(new Callback<MResponse>() {
+//            @Override
+//            public void onResponse(Call<MResponse> call, Response<MResponse> response) {
+//                Log.w(TAG, "sendAddmod");
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MResponse> call, Throwable t) {
+//                Log.e(TAG, t.getMessage());
+//            }
+//        });
+//    }
 
     public void replace(Fragment fragment) {
         FragmentManager fm = getSupportFragmentManager();
@@ -330,13 +320,13 @@ public class MainActivity extends AppCompatActivity
     public void sendSupport(final MSupport mSupport) {
         _apiService.saveSupport(null, mSupport.getContent(), new Date().getTime()).enqueue(new Callback<MResponse>() {
             @Override
-            public void onResponse(Call<MResponse> call, Response<MResponse> response) {
+            public void onResponse(@NonNull Call<MResponse> call, @NonNull Response<MResponse> response) {
                 boolean delete = _dbComment.delete(mSupport.getId());
                 Log.w(TAG, "Trạng thái gửi: " + delete);
             }
 
             @Override
-            public void onFailure(Call<MResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<MResponse> call, @NonNull Throwable t) {
                 Log.e(TAG, t.getMessage());
             }
         });

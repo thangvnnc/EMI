@@ -251,7 +251,7 @@
             android:gravity="center">
 
             <TextView
-                android:id="@+id/btnClickContact"
+                android:id="@+id/txtClickContact"
                 android:padding="8dp"
                 android:text="Liên hệ ngay với chúng tôi để tư vấn miến phí bạn nhé\nClick vào đây"
                 style="@style/TextView"

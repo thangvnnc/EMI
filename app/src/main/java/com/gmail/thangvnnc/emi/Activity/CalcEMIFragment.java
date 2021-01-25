@@ -1,13 +1,8 @@
 package com.gmail.thangvnnc.emi.Activity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +11,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.gmail.thangvnnc.emi.Controller.Common;
 import com.gmail.thangvnnc.emi.Controller.CurrencyEditText;
 import com.gmail.thangvnnc.emi.Controller.EMI;
-import com.gmail.thangvnnc.emi.DBSQLite.History.History.DBHistoryEmi;
-import com.gmail.thangvnnc.emi.Dialog.DialogHistory;
-import com.gmail.thangvnnc.emi.Model.MEmiHistory;
 import com.gmail.thangvnnc.emi.R;
 
 public class CalcEMIFragment extends Fragment {

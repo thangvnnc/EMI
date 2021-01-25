@@ -1,13 +1,14 @@
 package com.gmail.thangvnnc.emi.Activity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.gmail.thangvnnc.emi.Controller.Common;
 import com.gmail.thangvnnc.emi.Controller.CurrencyEditText;
@@ -42,6 +47,7 @@ public class CalcInterestPercentFragment extends Fragment {
     private LinearLayout _lnlControl = null;
     private Button _btnReset = null;
     private Button _btnResetAll = null;
+    private TextView _txtClickContact = null;
 
     public static Handler handler = null;
     public final static String INTENT_LOANAMOUNT = "LOANAMOUNT";
@@ -83,7 +89,16 @@ public class CalcInterestPercentFragment extends Fragment {
         _btnResetAll = view.findViewById(R.id.btnResetAll);
 
         _lnlControl = view.findViewById(R.id.lnlControl);
+        _txtClickContact = view.findViewById(R.id.txtClickContact);
+
         handler = mHandler;
+
+        _txtClickContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialogSupporter();
+            }
+        });
     }
 
     @SuppressLint("HandlerLeak") public Handler mHandler = new Handler() {
@@ -96,6 +111,7 @@ public class CalcInterestPercentFragment extends Fragment {
         }
     };
 
+    @SuppressLint("SetTextI18n")
     private void setValueFragment(MEmiHistory mEmiHistory) {
         loanAmountD = mEmiHistory.loanAmount;
         emiD =  mEmiHistory.emi;
@@ -107,7 +123,7 @@ public class CalcInterestPercentFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         _view = view;
 
@@ -229,6 +245,39 @@ public class CalcInterestPercentFragment extends Fragment {
             _txtTotalAll.setText("0");
             _txtTotalInterestRatePayment.setText("0");
         }
+    }
+
+    public void showDialogSupporter() {
+        final String message = _context.getString(R.string.phone_support);
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(_context);
+        builder1.setTitle("Hổ trợ tư vấn lãi suất");
+        builder1.setMessage("Bạn có nhu cầu vay vốn hãy liên hệ đến tôi qua số điện thoại " + message+ "\nGặp Cẩm Tiên");
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                "Gọi ngay",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel: " + message));
+                        startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "Nhắn tin",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String message = _context.getString(R.string.phone_support);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + message));
+                        intent.putExtra("sms_body", "Hãy tư vấn vay giúp tôi. Tôi muốn vay ");
+                        startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 
     @Override

@@ -4,10 +4,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
 
 import com.gmail.thangvnnc.emi.Activity.CalcInterestPercentFragment;
 import com.gmail.thangvnnc.emi.Adapter.MEmiHistoryAdapter;

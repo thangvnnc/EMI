@@ -9,6 +9,10 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
+import androidx.appcompat.widget.AppCompatEditText;
+
+import com.gmail.thangvnnc.emi.R;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -19,7 +23,7 @@ import java.util.Locale;
  * Some note <br/>
  * <li>Always use locale US instead of default to make DecimalFormat work well in all language</li>
  */
-public class CurrencyEditText extends android.support.v7.widget.AppCompatEditText {
+public class CurrencyEditText extends AppCompatEditText {
     private static String prefix = "";
     private static final int MAX_LENGTH = 20;
     private static final int MAX_DECIMAL = 3;
@@ -59,7 +63,7 @@ public class CurrencyEditText extends android.support.v7.widget.AppCompatEditTex
     }
 
     public CurrencyEditText(Context context, AttributeSet attrs) {
-        this(context, attrs, android.support.v7.appcompat.R.attr.editTextStyle);
+        this(context, attrs, R.attr.editTextStyle);
     }
 
     public CurrencyEditText(Context context, AttributeSet attrs, int defStyleAttr) {
