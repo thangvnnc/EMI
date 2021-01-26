@@ -2,6 +2,7 @@ package com.gmail.thangvnnc.emi.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,7 +16,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -27,9 +27,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.facebook.ads.AdSize;
-import com.facebook.ads.AdView;
-import com.facebook.ads.AudienceNetworkAds;
+//import com.facebook.ads.AdSize;
+//import com.facebook.ads.AdView;
+//import com.facebook.ads.AudienceNetworkAds;
 import com.gmail.thangvnnc.emi.DBSQLite.History.Support.DBComment;
 import com.gmail.thangvnnc.emi.DBServer.API.APIService;
 import com.gmail.thangvnnc.emi.DBServer.API.ApiUtils;
@@ -37,8 +37,22 @@ import com.gmail.thangvnnc.emi.Dialog.DialogHistory;
 import com.gmail.thangvnnc.emi.Model.MResponse;
 import com.gmail.thangvnnc.emi.Model.MSupport;
 import com.gmail.thangvnnc.emi.R;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
+import com.google.android.gms.ads.ResponseInfo;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.navigation.NavigationView;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -56,7 +70,8 @@ public class MainActivity extends AppCompatActivity
     private AboutFragment _frgAbout = null;
     private CommentFragment _frgComment = null;
     private Context _context = null;
-    private AdView adView = null;
+    private AdView mAdView = null;
+//    private AdView adView = null;
     private APIService _apiService = null;
     private DBComment _dbComment = null;
 
@@ -65,14 +80,15 @@ public class MainActivity extends AppCompatActivity
     private final static String TITLE_DEVELOPER = "Nhà phát triển";
     private final static String TITLE_SEND = "Đóng góp ý kiến";
 
-    String androidId = null;
+    String deviceId = null;
 
     @SuppressLint("HardwareIds")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_home);
-        AudienceNetworkAds.initialize(this);
+        // FACEBOOK init admob
+//        AudienceNetworkAds.initialize(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -108,8 +124,10 @@ public class MainActivity extends AppCompatActivity
 
 
         try {
-            androidId = Settings.Secure.getString(_context.getContentResolver(),
+            String androidId = Settings.Secure.getString(_context.getContentResolver(),
                     Settings.Secure.ANDROID_ID);
+
+            deviceId = md5(androidId).toUpperCase();
         }
         catch (Exception e) {
             Log.d(TAG, e.getMessage());
@@ -121,6 +139,30 @@ public class MainActivity extends AppCompatActivity
 //        initAdView();
 //        }
 //        sendAndroid();
+    }
+
+    public static String md5(final String s) {
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest
+                    .getInstance("MD5");
+            digest.update(s.getBytes());
+            byte[] messageDigest = digest.digest();
+
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (byte b : messageDigest) {
+                String h = Integer.toHexString(0xFF & b);
+                while (h.length() < 2)
+                    h = "0" + h;
+                hexString.append(h);
+            }
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException ignored) {
+
+        }
+        return "";
     }
 
 //    private void sendAndroid() {
@@ -139,35 +181,76 @@ public class MainActivity extends AppCompatActivity
 //        });
 //    }
 
-    @Override
-    protected void onDestroy() {
-        if (adView != null) {
-            adView.destroy();
-        }
-        super.onDestroy();
-    }
+    // FACEBOOK ADMOB
+//    @Override
+//    protected void onDestroy() {
+//        if (adView != null) {
+//            adView.destroy();
+//        }
+//        super.onDestroy();
+//    }
 
     private void initAdView() {
-        // Find the Ad Container
-        LinearLayout adContainer = (LinearLayout) findViewById(R.id.adView);
-//        adView = new AdView(this, "419658932419622_419681735750675", AdSize.RECTANGLE_HEIGHT_250);
-        adView = new AdView(this, "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID", AdSize.RECTANGLE_HEIGHT_250);
-
-        // Add the ad view to your activity layout
-        adContainer.addView(adView);
-
-        // Request an ad
-        adView.loadAd();
-
-        // GOOGLE ADMOD
-//        MobileAds.initialize(_context, "ca-app-pub-1815534300099898~2918478086");
+        // FACEBOOK ADMOD
+//        // Find the Ad Container
+//        LinearLayout adContainer = (LinearLayout) findViewById(R.id.adView);
+////        adView = new AdView(this, "419658932419622_419681735750675", AdSize.RECTANGLE_HEIGHT_250);
+//        adView = new AdView(this, "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID", AdSize.RECTANGLE_HEIGHT_250);
 //
-//        mAdView = findViewById(R.id.adView);
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        mAdView.loadAd(adRequest);
+//        // Add the ad view to your activity layout
+//        adContainer.addView(adView);
+//
+//        // Request an ad
+//        adView.loadAd();
+
+//        // GOOGLE ADMOD
+        List<String> testDeviceIds = Collections.singletonList(deviceId);
+        RequestConfiguration configuration =
+                new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
+        MobileAds.setRequestConfiguration(configuration);
+        MobileAds.initialize(_context);
+
+//        MobileAds.initialize(_context, new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {
+//
+//            }
+//        });
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdFailedToLoad(LoadAdError error) {
+                super.onAdFailedToLoad(error);
+                // Gets the domain from which the error came.
+                String errorDomain = error.getDomain();
+                // Gets the error code. See
+                // https://developers.google.com/android/reference/com/google/android/gms/ads/AdRequest#constant-summary
+                // for a list of possible codes.
+                int errorCode = error.getCode();
+                // Gets an error message.
+                // For example "Account not approved yet". See
+                // https://support.google.com/admob/answer/9905175 for explanations of
+                // common errors.
+                String errorMessage = error.getMessage();
+                // Gets additional response information about the request. See
+                // https://developers.google.com/admob/android/response-info for more
+                // information.
+                ResponseInfo responseInfo = error.getResponseInfo();
+                // Gets the cause of the error, if available.
+                AdError cause = error.getCause();
+                // All of this information is available via the error's toString() method.
+                Log.d("Ads", error.toString());
+            }
+        });
 //        mAdView.setAdListener(new AdListener() {
 //            @Override
 //            public void onAdLoaded() {
+//                Log.v("onAdLoaded", "");
+//
 //                // Code to be executed when an ad finishes loading.
 //            }
 //
@@ -185,9 +268,9 @@ public class MainActivity extends AppCompatActivity
     }
 
 //    private void sendAdmod() {
-//        if (androidId == null) return;
+//        if (deviceId == null) return;
 //
-//        _apiService.saveAdmod(null, androidId, new Date().getTime()).enqueue(new Callback<MResponse>() {
+//        _apiService.saveAdmod(null, deviceId, new Date().getTime()).enqueue(new Callback<MResponse>() {
 //            @Override
 //            public void onResponse(Call<MResponse> call, Response<MResponse> response) {
 //                Log.w(TAG, "sendAddmod");
