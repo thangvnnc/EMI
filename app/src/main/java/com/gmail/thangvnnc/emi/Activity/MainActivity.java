@@ -150,8 +150,8 @@ public class MainActivity extends AppCompatActivity
     private void initAdView() {
         // Find the Ad Container
         LinearLayout adContainer = (LinearLayout) findViewById(R.id.adView);
-        adView = new AdView(this, "419658932419622_419681735750675", AdSize.RECTANGLE_HEIGHT_250);
-//        adView = new AdView(this, "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID", AdSize.RECTANGLE_HEIGHT_250);
+//        adView = new AdView(this, "419658932419622_419681735750675", AdSize.RECTANGLE_HEIGHT_250);
+        adView = new AdView(this, "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID", AdSize.RECTANGLE_HEIGHT_250);
 
         // Add the ad view to your activity layout
         adContainer.addView(adView);
